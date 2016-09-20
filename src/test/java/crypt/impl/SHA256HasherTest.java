@@ -18,6 +18,11 @@ public class SHA256HasherTest {
 
 	@Test
 	public void test() {
+		testForMessages();
+		testForHashables();
+	}
+
+	private void testForMessages() {
 		Hasher hasher = HasherFactory.createSHA256Hasher();
 		byte[] salt = HasherFactory.generateSalt();
 		hasher.setSalt(salt);
@@ -43,11 +48,34 @@ public class SHA256HasherTest {
 
 		int nbCollisions = 0;
 
-		for (byte[] hash : hashs)
-			for (byte[] otherHash : hashs)
-				if (hash != otherHash && Arrays.equals(hash, otherHash))
-					nbCollisions++;
+		for (int i = 0; i < hashs.length; i++)
+			for (int j = i+1; j < hashs.length; j++)
+				if (!Arrays.equals(messages[i], messages[j]))
+					if (Arrays.equals(hashs[i], hashs[j]))
+						nbCollisions++;
+
+
+		int messageLength = maxMessageLength;
+		byte[] hash = null;
+		byte[] message = new byte[messageLength];
+		rand.nextBytes(message);
+
+		for (int i = 0; i < 50; i++) {
+			byte[] currentHash = hasher.getHash(message);
+
+			assertTrue(hash == null || Arrays.equals(currentHash, hash));
+
+			hash = currentHash;
+		}
 
 		assertTrue(nbCollisions <= (maxCollisionRatio * nbMessages));
+	}
+
+	private void testForHashables() {
+		Hasher hasher = HasherFactory.createSHA256Hasher();
+		byte[] salt = HasherFactory.generateSalt();
+		hasher.setSalt(salt);
+
+		Random rand = new Random();
 	}
 }
