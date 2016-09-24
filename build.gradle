@@ -2,7 +2,7 @@ apply plugin: 'java'
 apply plugin: 'eclipse'
 apply plugin: 'maven'
 apply plugin: 'application'
-
+apply plugin: 'jacoco'
 
 mainClassName = "controller.Application"
 //mainClassName = "crypt.CryptCommander"
@@ -55,3 +55,5 @@ eclipse {
     downloadJavadoc = true
   }
 }
+
+test.finalizedBy jacocoTestReport
