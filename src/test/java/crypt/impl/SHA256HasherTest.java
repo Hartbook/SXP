@@ -9,80 +9,14 @@ import crypt.api.hashs.Hasher;
 import crypt.api.hashs.Hashable;
 import crypt.factories.HasherFactory;
 import crypt.impl.hashs.SHA256Hasher;
+import crypt.impl.DefaultHasherTest;
 
 public class SHA256HasherTest {
-
-	private class ToyHashable implements Hashable {
-		private byte[] hashableData = {1, 2, 3, 4, 5, 6, 7, 8, 9};
-	
-		@Override
-		public byte[] getHashableData() {
-			return hashableData;
-		}
-	}
-
-	private int maxMessageLength = 1000;
-	private int minMessageLength = 1;
-	private int nbMessages = 1000;
-	private float maxCollisionRatio = 1f / 1000000;
+	private DefaultHasherTest baseTest = new DefaultHasherTest();
 	private Random rand = new Random();
 
-	private void testDeterminism(Hasher hasher) {
-		byte[] message = new byte[maxMessageLength];
-		byte[] hash = null;
-		rand.nextBytes(message);
-
-		for (int i = 0; i < 20; i++) {
-			byte[] currentHash = hasher.getHash(message);
-
-			assertTrue(hash == null || Arrays.equals(currentHash, hash));
-
-			hash = currentHash;
-		}
-	}
-
-	private void testSaltEffect(Hasher withSalt, Hasher noSalt) {
-		byte[] message = new byte[maxMessageLength];
-
-		for (int i = 0; i < 40; i++) {
-			rand.nextBytes(message);
-			byte[] hash2 = withSalt.getHash(message);
-			byte[] hash1 = noSalt.getHash(message);
-
-			assertFalse(Arrays.equals(hash1, hash2));
-		}
-	}
-
-	private void testForCollisions(Hasher hasher) {
-		byte[][] messages = new byte[nbMessages][];
-		byte[][] hashs = new byte[messages.length][];
-
-		for (int i = 0; i < messages.length; ++i) {
-			int messageLength = rand.nextInt(maxMessageLength) + minMessageLength;
-			if (i == 0)
-				messageLength = 1;
-			else if (i == messages.length - 1)
-				messageLength = maxMessageLength;
-
-			messages[i] = new byte[messageLength];
-			rand.nextBytes(messages[i]);
-
-			hashs[i] = hasher.getHash(messages[i]);
-		}
-
-		int nbCollisions = 0;
-
-		for (int i = 0; i < hashs.length; i++)
-			for (int j = i+1; j < hashs.length; j++)
-				if (!Arrays.equals(messages[i], messages[j]))
-					if (Arrays.equals(hashs[i], hashs[j]))
-						nbCollisions++;
-
-		assertTrue(nbCollisions <= (maxCollisionRatio * nbMessages));
-	}
-
 	private void testHashLength(Hasher hasher) {
-		int messageLength = rand.nextInt(maxMessageLength) + minMessageLength;
+		int messageLength = rand.nextInt(baseTest.maxMessageLength) + baseTest.minMessageLength;
 		byte[] message;
 		byte[] hash;
 
@@ -94,34 +28,20 @@ public class SHA256HasherTest {
 		}
 	}
 
-	private void testHashableHash(Hasher hasher) {
-		Hashable hashable = new ToyHashable();
-		byte[] hash1 = hasher.getHash(hashable.getHashableData());
-		byte[] hash2 = hasher.getHash(hashable);
-
-		assertTrue(Arrays.equals(hash1, hash2));
-	}
-
 	@Test
 	public void test() {
-		byte[] salt = HasherFactory.generateSalt();
+		byte[] salt = baseTest.factory.generateSalt();
 
-		Hasher hasherSalt = HasherFactory.createSHA256Hasher();
+		Hasher hasherSalt = new SHA256Hasher(salt);
+		hasherSalt = baseTest.factory.createSHA256Hasher();
 		hasherSalt.setSalt(salt);
 
-		Hasher hasherNoSalt = HasherFactory.createSHA256Hasher();
+		Hasher hasherNoSalt = baseTest.factory.createSHA256Hasher();
 
-		testDeterminism(hasherSalt);
-		testForCollisions(hasherSalt);
 		testHashLength(hasherSalt);
-		testHashableHash(hasherSalt);
-
-		testDeterminism(hasherNoSalt);
-		testForCollisions(hasherNoSalt);
-		testHashableHash(hasherSalt);
 		testHashLength(hasherNoSalt);
 
-		testSaltEffect(hasherSalt, hasherNoSalt);
+		baseTest.testHasher(hasherSalt, hasherNoSalt);
 	}
 }
 

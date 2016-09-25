@@ -15,7 +15,6 @@ import protocol.base.BaseContract;
  */
 public class ElGamalContract extends BaseContract<BigInteger, ElGamalKey, ElGamalSignature, ElGamalSigner>{
 	
-	
 	/**
 	 * Create a new contract with an ElGamalSigner
 	 */

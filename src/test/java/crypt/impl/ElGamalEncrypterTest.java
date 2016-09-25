@@ -11,6 +11,19 @@ import model.entity.ElGamalKey;
 
 public class ElGamalEncrypterTest {
 	private static final String plainText = "Lorem ipsum dolor sit amet";
+
+	private void testExceptions() {
+		ElGamalEncrypter encrypter = new ElGamalEncrypter();
+
+		try {
+			encrypter.encrypt(plainText.getBytes());
+			fail();
+		} catch (RuntimeException e) {}
+		try {
+			encrypter.decrypt(new byte[1]);
+			fail();
+		} catch (RuntimeException e) {}
+	}
 	
 	@Test
 	public void test() {
@@ -21,5 +34,7 @@ public class ElGamalEncrypterTest {
 		String decrypted = new String(encrypter.decrypt(cypher));
 		assertEquals(plainText, decrypted);
 		assertNotEquals(plainText, cypher);
+
+		testExceptions();
 	}
 }
