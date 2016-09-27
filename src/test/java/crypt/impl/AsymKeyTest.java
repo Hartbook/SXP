@@ -9,7 +9,7 @@ import crypt.impl.key.ElGamalAsymKey;
 
 public class AsymKeyTest {
 
-	public void testAsymKey(AsymKey key) {
+	public void testAsymKey(AsymKey<BigInteger> key) {
 		BigInteger publicKey = new BigInteger("16");
 		BigInteger privateKey = new BigInteger("11037");
 
