@@ -126,6 +126,7 @@ public class DefaultHasherTest {
 		Hasher hasherNoSalt = factory.createDefaultHasher();
 
 		testHasher(hasherSalt, hasherNoSalt);
+		
 	}
 }
 
