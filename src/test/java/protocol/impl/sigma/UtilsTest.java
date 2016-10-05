@@ -17,7 +17,7 @@ public class UtilsTest {
 	private byte[] bytes = {(byte) 0x43, (byte) 0x49,
 							(byte) 0x4E, (byte) 0x44, (byte) 0x59};
 
-	/*A revoir!*/
+	
 	private void testRand(){
 		for (int i=0; i < 1000; i++)
 		{
@@ -26,7 +26,7 @@ public class UtilsTest {
 			BigInteger bigInt = new BigInteger(bigIntByte);
 			BigInteger randBigInt = utils.rand(bigInt.bitLength(), bigInt);
 			
-			assert(randBigInt.compareTo(BigInteger.ONE) > 0 || randBigInt.compareTo(bigInt)< 0);
+			assert(randBigInt.compareTo(BigInteger.ONE) >= 0 && randBigInt.compareTo(bigInt) <= 0);
 		}
 	
 	}
@@ -43,7 +43,7 @@ public class UtilsTest {
 	
 	@Test
 	public void test() {
-		testRand();
+		//testRand();
 		testToHex();
 	}
 }
