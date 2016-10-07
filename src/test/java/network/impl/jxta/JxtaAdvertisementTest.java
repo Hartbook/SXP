@@ -36,12 +36,17 @@ public class JxtaAdvertisementTest {
 		
 		Peer peer = PeerFactory.createDefaultAndStartPeer();
 		jxtaAdv.publish(peer);
-
-		Document doc = new Document ();
+	
+		Element elem = new Element("Coucou");
+		Document doc = new Document (elem);
 		
 		jxtaAdv.initialize(doc);
-		//assertTrue(Document.equals(jxtaAdv.getDocument()adv.getDocument()));
-
+		
+		doc = jxtaAdv.getDocument();
+		
+		jxtaAdv.setSourceURI("Kirigiri");
+		assertTrue(jxtaAdv.getSourceURI().equals("Kirigiri"));
+		
 	}
 }
 
