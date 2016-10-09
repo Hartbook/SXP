@@ -30,18 +30,13 @@ public class ResponsesCCDTest {
 
 		ResEncrypt res = encryption(msg, key1);
 
-		BigInteger u = new BigInteger("123454");
-		BigInteger v = new BigInteger("12456");		
-		ResEncrypt badRes = new ResEncrypt(u,v,msg); 
+		ResEncrypt badRes = encryption(msg, key1); 
 		
 		ResponsesCCD response = trent.SendResponse(res);
 
 		assertTrue(response.Verifies(key1, res));
 		assertFalse(response.Verifies(key2, res));
 		assertFalse(response.Verifies(key1, badRes));
-
 	}
-
-	
 }
 
