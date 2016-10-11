@@ -16,6 +16,7 @@ import network.impl.jxta.JxtaAdvertisement;
 import network.impl.jxta.AdvertisementBridge;
 import network.impl.advertisement.ItemAdvertisement;
 import java.util.Arrays;
+import java.lang.*;
 
 public class JxtaAdvertisementTest {
 	private Advertisement adv = AdvertisementFactory.createItemAdvertisement();
@@ -25,7 +26,7 @@ public class JxtaAdvertisementTest {
 		AdvertisementBridge JxtaAdvBridge = jxtaAdv.getJxtaAdvertisementBridge();
 		assertTrue(Arrays.equals(jxtaAdv.getIndexFields(),JxtaAdvBridge.getIndexFields()));
 	}
-	
+
 	@Test
 	public void test() {
 		
@@ -35,6 +36,14 @@ public class JxtaAdvertisementTest {
 		assertTrue(Arrays.equals(jxtaAdv.getIndexFields(),adv.getIndexFields()));
 		
 		Peer peer = PeerFactory.createDefaultAndStartPeer();
+
+		try
+		{
+			Thread.sleep(2000); // On laisse le temps au choses de s'init
+		}
+		catch (InterruptedException e)
+		{}
+
 		jxtaAdv.publish(peer);
 	
 		Element elem = new Element("Coucou");
