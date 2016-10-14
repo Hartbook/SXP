@@ -56,6 +56,8 @@ public class JxtaAdvertisementTest {
 		jxtaAdv.setSourceURI("Kirigiri");
 		assertTrue(jxtaAdv.getSourceURI().equals("Kirigiri"));
 		
+		peer.stop();
+		
 	}
 }
 

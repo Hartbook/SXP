@@ -55,6 +55,7 @@ public class JxtaNodeTest {
 			fail("");
 		}
 		
+		
 		assertFalse(badNode.isStarted());
 		
 		try{
@@ -77,7 +78,12 @@ public class JxtaNodeTest {
 		}catch(Exception e){
 		fail("");
 		}
-		
+			
+		try{
+			badNode.stop();
+			node.stop();
+		}catch (RuntimeException e){}
+			
 	}
 }
 

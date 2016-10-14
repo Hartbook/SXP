@@ -28,7 +28,7 @@ public class PeerAdvertisementTest {
 	
 	@Test
 	public void test() {
-		/*PeerAdvertisement peerAdv = new PeerAdvertisement();
+	/*	PeerAdvertisement peerAdv = new PeerAdvertisement();
 		String name = new String ("peer");
 		assertTrue(name.equals(peerAdv.getName()));
 
@@ -53,7 +53,9 @@ public class PeerAdvertisementTest {
 		doc = peerAdv.getDocument();
 		
 		peerAdv.setSourceURI("Kirigiri");
-		assertTrue(peerAdv.getSourceURI().equals("Kirigiri"));*/
+		assertTrue(peerAdv.getSourceURI().equals("Kirigiri"));
+		
+		peer.stop();*/
 		
 	}
 
