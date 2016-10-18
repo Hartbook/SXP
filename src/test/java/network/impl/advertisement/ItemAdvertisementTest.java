@@ -4,9 +4,7 @@ import static org.junit.Assert.*;
 import network.impl.advertisement.ItemAdvertisement;
 
 
-import org.jdom2.Document;
-import org.jdom2.output.XMLOutputter;
-import org.jdom2.Element;
+import org.jdom2.*;
 
 import network.api.advertisement.ItemAdvertisementInterface;
 import network.api.annotation.AdvertisementAttribute;
@@ -47,8 +45,11 @@ public class ItemAdvertisementTest{
 
 		item.publish(peer);*/
 	
-		Element elem = new Element("Coucou");
-		Document doc = new Document (elem);
+		Element root = new Element("root");
+		Element child = new Element("title");
+
+		root.addContent(child);
+		Document doc = new Document(root);
 		
 		item.initialize(doc);
 		
