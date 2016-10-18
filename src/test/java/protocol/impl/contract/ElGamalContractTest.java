@@ -10,6 +10,7 @@ import crypt.impl.signatures.ElGamalSignature;
 import crypt.impl.signatures.ElGamalSigner;
 import model.entity.ElGamalKey;
 import protocol.impl.contract.ElGamalContract;
+import protocol.api.Wish;
 
 public class ElGamalContractTest {
 	private static final int N = 5;
@@ -43,7 +44,6 @@ public class ElGamalContractTest {
 			ExempleSignable s2 = (ExempleSignable) o;
 			return this.exemple.equals(s2.exemple);
 		}
-		
 	}
 	
 	@Test
@@ -86,5 +86,16 @@ public class ElGamalContractTest {
 		signer.setKey(keys[N-1]);
 		c1.addSignature(keys[N-1], c1.sign(signer, keys[N-1]));
 		assertTrue(c1.isFinalized());
+
+		c1 = new ElGamalContract(signable1);
+
+		try {
+			c1.addSignature(null, signable1.getSign());
+			fail("");
+		} catch (RuntimeException e) {}
+
+		c1.setWish(Wish.valueOf("ACCEPT"));
+
+		assertTrue(Wish.ACCEPT == c1.getWish());
 	}
 }
