@@ -12,11 +12,6 @@ import java.io.Serializable;
 
 public class JsonUtilsTest {
 
-	private String[] expectedStarts = { 
-	"{\"integer\":  \"1\", \"str1\": null, \"str2\": \"Dooz Kawa\", \"integers\": []",
-	"{\"integer\":  \"2\", \"str1\": null, \"str2\": \"Dooz Kawa\", \"integers\": []"
-	};
-
 	private class ToyBean implements Serializable {
 
 		private int integer;
