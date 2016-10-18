@@ -28,13 +28,13 @@ public class PeerAdvertisementTest {
 	
 	@Test
 	public void test() {
-	/*	PeerAdvertisement peerAdv = new PeerAdvertisement();
+		PeerAdvertisement peerAdv = new PeerAdvertisement();
 		String name = new String ("peer");
 		assertTrue(name.equals(peerAdv.getName()));
 
 		assertTrue(peerAdv.getAdvertisementType() == null);
 		
-		Peer peer = PeerFactory.createDefaultAndStartPeer();
+		/*Peer peer = PeerFactory.createDefaultAndStartPeer();
 
 		try
 		{
@@ -43,7 +43,7 @@ public class PeerAdvertisementTest {
 		catch (InterruptedException e)
 		{}
 
-		peerAdv.publish(peer);
+		peerAdv.publish(peer);*/
 	
 		Element elem = new Element("Coucou");
 		Document doc = new Document (elem);
@@ -55,7 +55,7 @@ public class PeerAdvertisementTest {
 		peerAdv.setSourceURI("Kirigiri");
 		assertTrue(peerAdv.getSourceURI().equals("Kirigiri"));
 		
-		peer.stop();*/
+		//peer.stop();
 		
 	}
 
