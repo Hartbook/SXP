@@ -10,7 +10,6 @@ import protocol.impl.sigma.Utils;
 
 public class UtilsTest {
 
-	private Random rand = new Random();
 	private Utils utils = new Utils();
 	private String text = "CINDY";
 	private String hex = "43494E4459";
@@ -19,16 +18,10 @@ public class UtilsTest {
 
 	
 	private void testRand(){
-		for (int i=0; i < 1000; i++)
-		{
-			byte[] bigIntByte = new byte[1000];
-			rand.nextBytes(bigIntByte);
-			BigInteger bigInt = new BigInteger(bigIntByte);
+			BigInteger bigInt = new BigInteger("8541578548458");
 			BigInteger randBigInt = utils.rand(bigInt.bitLength(), bigInt);
 			
-			assert(randBigInt.compareTo(BigInteger.ONE) >= 0 && randBigInt.compareTo(bigInt) <= 0);
-		}
-	
+			assert(randBigInt.compareTo(BigInteger.ONE) >= 0 && randBigInt.compareTo(bigInt) <= 0);	
 	}
 	
 	
@@ -43,7 +36,7 @@ public class UtilsTest {
 	
 	@Test
 	public void test() {
-		//testRand();
+		testRand();
 		testToHex();
 	}
 }

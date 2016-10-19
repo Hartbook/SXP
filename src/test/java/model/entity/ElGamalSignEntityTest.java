@@ -8,6 +8,7 @@ import model.entity.ElGamalSignEntity;
 
 import java.io.Serializable;
 import java.math.BigInteger;
+import java.lang.reflect.Field;
 
 import javax.persistence.Entity;
 import javax.validation.constraints.NotNull;
@@ -17,6 +18,8 @@ import crypt.api.signatures.ParamName;
 import crypt.base.BaseSignature;
 
 import org.eclipse.persistence.annotations.UuidGenerator;
+
+import java.lang.annotation.*;
 
 
 public class ElGamalSignEntityTest {
@@ -31,6 +34,12 @@ public class ElGamalSignEntityTest {
 		BigInteger s = new BigInteger("56895");
 		sign.setS(s);
 		assertTrue(sign.getS().equals(s));	
-
+		
+		try
+		{
+			sign.getParam("BadParam");
+			fail("");
+		}catch(RuntimeException e){}
+		
 	}
 }

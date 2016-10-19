@@ -51,6 +51,11 @@ public class SimpleAuthentifierTest {
 
 			assertTrue(login.equals(usernames[i]));
 			assertTrue(password.equals(passwords[i]));
+
 		}
+		
+		String login = authentifier.getLogin(tokens[1]);
+		authentifier.deleteToken(tokens[1]);
+		assertFalse(login.equals(authentifier.getLogin(tokens[1])));
 	}
 }

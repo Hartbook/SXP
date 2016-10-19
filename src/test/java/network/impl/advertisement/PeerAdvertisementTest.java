@@ -25,10 +25,10 @@ import java.lang.*;
 
 public class PeerAdvertisementTest {
 
-	
+	AdvertisementFactory factory = new AdvertisementFactory();
 	@Test
 	public void test() {
-		PeerAdvertisement peerAdv = new PeerAdvertisement();
+		PeerAdvertisement peerAdv = (PeerAdvertisement)factory.createPeerAdvertisement();
 		String name = new String ("peer");
 		assertTrue(name.equals(peerAdv.getName()));
 

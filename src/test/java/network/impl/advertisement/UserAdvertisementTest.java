@@ -26,10 +26,10 @@ import java.lang.*;
 
 public class UserAdvertisementTest {
 
-	
+	AdvertisementFactory factory = new AdvertisementFactory();
 	@Test
 	public void test() {
-		UserAdvertisement user = new UserAdvertisement();
+		UserAdvertisement user = (UserAdvertisement)factory.createUserAdvertisement();
 		String name = new String ("user");
 		assertTrue(name.equals(user.getName()));  
 		

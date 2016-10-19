@@ -23,10 +23,12 @@ import java.util.Arrays;
 import java.lang.*;
 
 public class ItemAdvertisementTest{
-	@Test
 
+	
+	AdvertisementFactory factory = new AdvertisementFactory();
+	@Test
 	public void test(){
-		ItemAdvertisement item = new ItemAdvertisement();
+		ItemAdvertisement item = (ItemAdvertisement)factory.createItemAdvertisement();
 		String name = new String ("item");
 		assertTrue(name.equals(item.getName()));
 		
