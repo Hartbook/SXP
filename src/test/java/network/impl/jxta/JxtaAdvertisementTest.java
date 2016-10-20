@@ -35,7 +35,7 @@ public class JxtaAdvertisementTest {
 		testBridge();
 		assertTrue(Arrays.equals(jxtaAdv.getIndexFields(),adv.getIndexFields()));
 		
-		Peer peer = PeerFactory.createDefaultAndStartPeer();
+		//Peer peer = PeerFactory.createDefaultAndStartPeer();
 
 		try
 		{
@@ -44,7 +44,7 @@ public class JxtaAdvertisementTest {
 		catch (InterruptedException e)
 		{}
 
-		jxtaAdv.publish(peer);
+		//jxtaAdv.publish(peer);
 	
 		Element elem = new Element("Coucou");
 		Document doc = new Document (elem);
@@ -56,7 +56,11 @@ public class JxtaAdvertisementTest {
 		jxtaAdv.setSourceURI("Kirigiri");
 		assertTrue(jxtaAdv.getSourceURI().equals("Kirigiri"));
 		
-		peer.stop();
+		//peer.stop();
+		
+		//peer = null;
+		
+		System.gc();
 		
 	}
 }

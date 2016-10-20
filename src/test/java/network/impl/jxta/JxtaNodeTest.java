@@ -83,6 +83,10 @@ public class JxtaNodeTest {
 			badNode.stop();
 			node.stop();
 		}catch (RuntimeException e){}
+		
+		node = null;
+		badNode = null;
+		System.gc();
 			
 	}
 }
