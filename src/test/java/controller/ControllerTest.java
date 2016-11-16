@@ -34,6 +34,9 @@ public class ControllerTest {
 		StringBuilder stderr = 
 			commandExecutor.getStandardErrorFromCommand();
 
+		if (stdout.toString().length() == 0)
+			return stderr.toString();
+
 		return stdout.toString();
 	}
 	
@@ -43,11 +46,11 @@ public class ControllerTest {
 
 		application.getInstance().runForTests(restPort);
 
+		while (getResponseOf("").contains("curl")) // Wait until restServer is ready
+			try {Thread.sleep(500);} catch (Exception e) {fail("");};
+
 		String result = getResponseOf("api/users/subscribe?login=dawa&password=touny");
 
-		System.out.println("Result :");
-		System.out.println(result);
-
-		assertTrue(result.length() > 5);
+		assertTrue(result.length() > 5 && result.startsWith("{"));
 	}
 }
