@@ -45,6 +45,9 @@ public class ControllerTest {
 
 		String result = getResponseOf("api/users/subscribe?login=dawa&password=touny");
 
+		System.out.println("Result :");
+		System.out.println(result);
+
 		assertTrue(result.length() > 5);
 	}
 }
