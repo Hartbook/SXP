@@ -1,22 +1,33 @@
 package network.utils;
+
 import org.junit.Test;
 import static org.junit.Assert.*;
-import network.impl.advertisement.ItemAdvertisement;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.URL;
-import java.net.InetAddress;
+import java.util.*;
 
-public class IpCheckerTest{
+public class IpCheckerTest {
 
-	
-	IpChecker ipChecker = new IpChecker();
+	private static final IpChecker ipChecker = new IpChecker();
+
 	@Test
-	public void test() throws Exception{
+	public void test() {
+		String ip = null;
 
-		System.out.println(ipChecker.getIp());
-		assertTrue(InetAddress.getLocalHost().getHostAddress().equals(ipChecker.getIp()));
+		try {
+			ip = ipChecker.getIp();
+		} catch (Exception e) {e.printStackTrace(); fail("");};
+
+		assertTrue(ip != null);
+
+		assertTrue(ip.length() <= 15);
+
+		boolean isIp = true;
+
+		for (char c : ip.toCharArray())
+			if ((c != '.') && (c < '0' || c > '9'))
+				isIp = false;
+
+		assertTrue(isIp);
 	}
 }
+
