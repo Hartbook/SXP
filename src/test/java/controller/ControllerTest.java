@@ -40,17 +40,32 @@ public class ControllerTest {
 		return stdout.toString();
 	}
 	
+	private void waitUntilServerIsReady() {
+		while (getResponseOf("").contains("curl"))
+			try {Thread.sleep(500);} catch (Exception e) {fail("");};
+	}
+	
+	private void connectWithUnknownUser() {
+		String response = getResponseOf("api/users/login?login=franck&password=franck");
+		
+		assertTrue(true);
+	}
+	
+	private void subscribe() {
+		String response = getResponseOf("api/users/subscribe?login=cindy&password=cindy");
+		
+		assertTrue(response.length() > 5 && response.startsWith("{"));
+	}
+	
 	@Test
 	public void test() {
 		Application application = new Application();
 
 		application.getInstance().runForTests(restPort);
 
-		while (getResponseOf("").contains("curl")) // Wait until restServer is ready
-			try {Thread.sleep(500);} catch (Exception e) {fail("");};
-
-		String result = getResponseOf("api/users/subscribe?login=dawa&password=touny");
-
-		assertTrue(result.length() > 5 && result.startsWith("{"));
+		waitUntilServerIsReady();
+		connectWithUnknownUser();
+		subscribe();
 	}
 }
+
