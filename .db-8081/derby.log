@@ -1,11 +1,11 @@
 ----------------------------------------------------------------
-Wed Nov 23 12:22:41 CET 2016:
-Booting Derby version The Apache Software Foundation - Apache Derby - 10.12.1.1 - (1704137): instance a816c00e-0158-90ec-672d-00001bf728b3 
-on database directory /amuhome/d13001158/prog/GL/SXP/.db-8081/simpleDb with class loader sun.misc.Launcher$AppClassLoader@73d16e93 
-Loaded from file:/amuhome/d13001158/.gradle/caches/modules-2/files-2.1/org.apache.derby/derby/10.12.1.1/75070c744a8e52a7d17b8b476468580309d5cd09/derby-10.12.1.1.jar
+Wed Nov 23 13:14:02 CET 2016:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.12.1.1 - (1704137): instance a816c00e-0158-911b-67de-00001bf728b3 
+on database directory /amuhome/a13003129/GL/Projet/SXP/.db-8081/simpleDb with class loader sun.misc.Launcher$AppClassLoader@73d16e93 
+Loaded from file:/amuhome/a13003129/.gradle/caches/modules-2/files-2.1/org.apache.derby/derby/10.12.1.1/75070c744a8e52a7d17b8b476468580309d5cd09/derby-10.12.1.1.jar
 java.vendor=Oracle Corporation
 java.runtime.version=1.8.0_92-b14
-user.dir=/amuhome/d13001158/prog/GL/SXP
+user.dir=/amuhome/a13003129/GL/Projet/SXP
 os.name=Linux
 os.arch=amd64
 os.version=3.16.0-4-amd64

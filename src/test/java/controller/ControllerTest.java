@@ -10,15 +10,26 @@ import controller.Application;
 import controller.SystemCommandExecutor;
 import org.json.*;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class ControllerTest {
 
 	private static final int restPort = 8081;
 	private static final String baseURL = "http://0.0.0.0:" + 
 		String.valueOf(restPort) + "/";
+		
+	private static final DateFormat format = new SimpleDateFormat("dd-MM-yyyy");
+	Date date = new Date();
+
 
 	private String token;
 	private String userid;
-
+	
+	private String itemId;
+	private String pbkey;
+	
 	private void connectWithUnknownUser() {
 		String response = getResponseOf("api/users/login?login=franck&password=franck");
 		assertFieldValue(response, "error", "true");
@@ -41,8 +52,27 @@ public class ControllerTest {
 		userid = getFieldValue(response, "userid");
 	}
 	
+	private void seeEmptyItemList(){
+		String response = getResponseOf("api/users/items");
+		assertTrue(response.equals("[]"));
+	}
+	
+	private void addItem(){
+		String response = getResponseOf("api/users/items", "Auth-Token: " + token, "{\"title\":\"Patates\",\"description\":\"Mes patates\"}");
+		System.out.println(response);
+		itemId = getFieldValue(response, "id");
+		assertFieldValue(response, "title", "Patates");
+		assertFieldValue(response, "description", "Mes patates");
+		assertFieldValue(response, "createdAt", format.format(date));
+		pbkey = getFieldValue(response, "pbkey");				
+		assertFieldValue(response, "username", "cindy");
+		assertFieldValue(response, "userid", userid);	
+	}
+	
 	@Test
 	public void test() {
+		deleteDataBase();
+		
 		Application application = new Application();
 
 		application.getInstance().runForTests(restPort);
@@ -52,6 +82,7 @@ public class ControllerTest {
 		subscribe();
 		logout();
 		connectWithKnownUser();
+		addItem();
 	}
 
 	private String getResponseOf(String request) {
@@ -105,7 +136,35 @@ public class ControllerTest {
 
 		return stdout.toString();
 	}
+	
+	private String getResponseOf(String request, String header, String data) {
+		List<String> commands = new ArrayList<String>();
+		commands.add("curl");
+		commands.add(baseURL + request);
+		commands.add("-H");
+		commands.add("Accept: application/json");
+		commands.add("-H");
+		commands.add(header);
+		commands.add("--data-binary");
+		commands.add(data);		
 
+		SystemCommandExecutor commandExecutor = 
+			new SystemCommandExecutor(commands);
+
+		try {
+			commandExecutor.executeCommand();
+		} catch (Exception e) {e.printStackTrace(); fail("");};
+
+		StringBuilder stdout = 
+			commandExecutor.getStandardOutputFromCommand();
+		StringBuilder stderr = 
+			commandExecutor.getStandardErrorFromCommand();
+
+		if (stdout.toString().length() == 0)
+			return stderr.toString();
+
+		return stdout.toString();
+	}
 
 	private void assertFieldValue(String json, String field, String value) {
 		try {
@@ -132,6 +191,20 @@ public class ControllerTest {
 	private void waitUntilServerIsReady() {
 		while (getResponseOf("").contains("curl"))
 			try {Thread.sleep(500);} catch (Exception e) {fail("");};
+	}
+	
+	private void deleteDataBase(){
+		List<String> commands = new ArrayList<String>();
+		commands.add("rm");
+		commands.add("-r");
+		commands.add(".db-8081/");
+		
+		SystemCommandExecutor commandExecutor = 
+			new SystemCommandExecutor(commands);
+
+		try {
+			commandExecutor.executeCommand();
+		} catch (Exception e) {e.printStackTrace(); fail("");};
 	}
 }
 
