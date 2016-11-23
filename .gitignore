@@ -19,3 +19,4 @@ db*
 .db*
 src/main/javascript/client/SXP*
 derby.system.home/
+.nfs*
