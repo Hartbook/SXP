@@ -55,25 +55,120 @@ public class ControllerTest {
 		userid = getFieldValue(response, "userid");
 	}
 	
-	private void seeEmptyItemList(){
-		String response = getResponseOf("api/users/items", null, null);
-		assertTrue(response.equals("[]"));
+	private void checkEmptyItemList(){	
+		List<String> headers = new ArrayList<String>();
+		headers.add("Auth-Token: " + token);
+		headers.add("Connection: keep-alive");
+
+		String response = getResponseOf("api/items", headers, null);
+		assertTrue(response.startsWith("[]"));
 	}
 	
 	private void addItem(){
-/*		List<String> headers = new ArrayList<String>();
+		List<String> headers = new ArrayList<String>();
+		headers.add("Origin: file://");
+		headers.add("Content-Type: application/json;charset=UTF-8");		
+		headers.add("Accept: application/json, text/plain, */*");
 		headers.add("Auth-Token: " + token);
 
-		String response = getResponseOf("api/users/items", "Auth-Token: " + token, "{\"title\":\"Patates\",\"description\":\"Mes patates\"}");
-		System.out.println(response);
+		List<String> datas = new ArrayList<String>();
+		datas.add ("{\"title\":\"Patates\",\"description\":\"Mes patates\"}");	
+		
+		String response = getResponseOf("api/items", headers, datas);			
+		
 		itemId = getFieldValue(response, "id");
 		assertFieldValue(response, "title", "Patates");
 		assertFieldValue(response, "description", "Mes patates");
 		assertFieldValue(response, "createdAt", format.format(date));
 		pbkey = getFieldValue(response, "pbkey");				
 		assertFieldValue(response, "username", "cindy");
-		assertFieldValue(response, "userid", userid);	
-*/
+		assertFieldValue(response, "userid", userid);
+	}
+	
+	private void checkItemList(){
+		List<String> headers = new ArrayList<String>();
+		headers.add("Auth-Token: " + token);
+		
+
+		String response = getResponseOf("api/items", headers, null);
+		response = response.replace('[', ' ');
+		response = response.replace(']', ' ');
+		response = response.trim();
+	
+		assertFieldValue(response, "id", itemId);
+		assertFieldValue(response, "title", "Patates");
+		assertFieldValue(response, "description", "Mes patates");
+		assertFieldValue(response, "createdAt", format.format(date));
+		assertFieldValue(response, "pbkey", pbkey);				
+		assertFieldValue(response, "username", "cindy");
+		assertFieldValue(response, "userid", userid);
+	}
+	
+	private void checkItem(){
+		List<String> headers = new ArrayList<String>();
+		headers.add("Auth-Token: " + token);
+	
+		String response = getResponseOf("api/items/" + itemId, headers, null);	
+		
+		assertFieldValue(response, "id", itemId);
+		assertFieldValue(response, "title", "Patates");
+		assertFieldValue(response, "description", "Mes patates");
+		assertFieldValue(response, "createdAt", format.format(date));
+		assertFieldValue(response, "pbkey", pbkey);				
+		assertFieldValue(response, "username", "cindy");
+		assertFieldValue(response, "userid", userid);
+	}
+	
+	private void editItem(){
+		List<String> headers = new ArrayList<String>();
+		headers.add("Auth-Token: " + token);
+		headers.add("Origin: file://");
+		headers.add("Content-Type: application/json;charset=UTF-8");
+		
+		List<String> datas = new ArrayList<String>();
+		datas.add("{\"id\":\"" + itemId + "\",\"title\":\"Patates\",\"description\":\"Mes belles patates\",\"createdAt\":\"" + format.format(date) + "\",\"pbkey\":\"" + pbkey + "\",\"username\":\"cindy\",\"userid\":\"" + userid + "\",\"$promise\":{},\"$resolved\":true}");
+			
+		String response = getResponseOf("api/items/" + itemId, headers, datas, "PUT");
+		
+		assertFieldValue(response, "id", itemId);
+		assertFieldValue(response, "title", "Patates");
+		assertFieldValue(response, "description", "Mes belles patates");
+		assertFieldValue(response, "createdAt", format.format(date));
+		assertFieldValue(response, "pbkey", pbkey);				
+		assertFieldValue(response, "username", "cindy");
+		assertFieldValue(response, "userid", userid);
+	}
+	
+	private void searchItem(){
+		String response = getResponseOf("api/search/simple?title=Patates", null, null);
+		response = response.replace('[', ' ');
+		response = response.replace(']', ' ');
+		response = response.trim();						
+				
+		assertFieldValue(response, "id", itemId);
+		assertFieldValue(response, "title", "Patates");
+		assertFieldValue(response, "description", "Mes belles patates");
+		assertFieldValue(response, "createdAt", format.format(date));
+		assertFieldValue(response, "pbkey", pbkey);				
+		assertFieldValue(response, "username", "cindy");
+		assertFieldValue(response, "userid", userid);				
+		
+	}
+	
+	private void checkAccount(){
+		List<String> headers = new ArrayList<String>();
+		headers.add("Auth-Token: " + token);
+
+		String response = getResponseOf("api/users/" + userid, headers, null);	
+		
+		assertFieldValue(response, "id", userid);
+		assertFieldValue(response, "nick", "cindy");
+		String salt = getFieldValue(response, "salt");
+		getFieldValue(response,"passwordHash");
+		getFieldIntValue(response, "createdAt");
+		JSONObject keys = getFieldJSONObjectValue(response, "key");
+		assertTrue(keys.has("privateKey"));
+		assertTrue(keys.has("publicKey"));
 	}
 	
 	@Test
@@ -89,7 +184,13 @@ public class ControllerTest {
 		subscribe();
 		logout();
 		connectWithKnownUser();
+		checkEmptyItemList();
 		addItem();
+		checkItemList();
+		checkItem();
+		editItem();
+		searchItem();
+		checkAccount();
 	}
 
 	private String getResponseOf(String request, List<String> headers, List<String> datas) {
@@ -125,6 +226,48 @@ public class ControllerTest {
 
 		if (stdout.toString().length() == 0)
 			return stderr.toString();
+		
+		return stdout.toString();
+	}
+
+	private String getResponseOf(String request, List<String> headers, List<String> datas, String action) {
+		List<String> commands = new ArrayList<String>();
+		commands.add("curl");
+		commands.add(baseURL + request);
+		commands.add("-H");
+		commands.add("Accept: application/json");
+
+		commands.add("-X " + action);
+
+		
+		if (headers != null)
+			for (String header : headers) {
+				commands.add("-H");
+				commands.add(header);
+			}
+
+		if (datas != null)
+			for (String data : datas) {
+				commands.add("--data-binary");
+				commands.add(data);		
+			}
+
+		SystemCommandExecutor commandExecutor = 
+			new SystemCommandExecutor(commands);
+
+		try {
+			commandExecutor.executeCommand();
+		} catch (Exception e) {e.printStackTrace(); fail("");};
+
+		StringBuilder stdout = 
+			commandExecutor.getStandardOutputFromCommand();
+		StringBuilder stderr = 
+			commandExecutor.getStandardErrorFromCommand();
+
+		if (stdout.toString().length() == 0)
+			return stderr.toString();
+
+			
 
 		return stdout.toString();
 	}
@@ -150,7 +293,32 @@ public class ControllerTest {
 
 		return fieldValue;
 	}
+	
+	private int getFieldIntValue(String json, String field) {
 
+		int result = -1;
+
+		try {
+			result = new JSONObject(json).getInt(field);
+		} catch (Exception e) {
+			fail("");
+		}
+
+		return result;
+	}
+	
+	private JSONObject getFieldJSONObjectValue (String json, String field){
+		JSONObject fieldValue = new JSONObject();
+
+		try {
+			fieldValue = new JSONObject(json).getJSONObject(field);
+		} catch (Exception e) {
+			fail("");
+		}
+
+		return fieldValue;	
+	}
+	
 	private void waitUntilServerIsReady() {
 		while (getResponseOf("", null, null).contains("curl"))
 			try {Thread.sleep(500);} catch (Exception e) {fail("");};
