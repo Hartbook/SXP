@@ -191,8 +191,6 @@ public class ControllerTest {
 		editItem();
 		searchItem();
 		checkAccount();
-
-		fail("");
 	}
 
 	private String getResponseOf(String request, List<String> headers, List<String> datas) {
