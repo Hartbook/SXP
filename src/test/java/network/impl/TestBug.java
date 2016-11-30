@@ -12,7 +12,10 @@ public class TestBug{
 
 	@Test
 	public void test() throws IOException{
-	/*	Peer peer = PeerFactory.createDefaultPeer();
+		//Minimal code that throw an error 
+		//TODO: Understand why and correct
+	
+		/*Peer peer = PeerFactory.createDefaultPeer();
 		peer.start(".peercache", 9578,"tcp://109.15.222.135:9800");
 		peer.stop();
 		peer.start(".peercache", 9578,"tcp://109.15.222.135:9800");

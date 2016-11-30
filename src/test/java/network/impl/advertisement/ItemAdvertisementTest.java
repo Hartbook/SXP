@@ -36,17 +36,6 @@ public class ItemAdvertisementTest{
 		item.setTitle("Vicky");
 		assertTrue(item.getTitle().equals("Vicky"));		
 
-		//Peer peer = PeerFactory.createDefaultAndStartPeer();
-
-		try
-		{
-			Thread.sleep(2000); // On laisse le temps au choses de s'init
-		}
-		catch (InterruptedException e)
-		{}
-
-		//item.publish(peer);
-	
 		Element root = new Element("root");
 		Element child = new Element("title");
 
@@ -60,9 +49,6 @@ public class ItemAdvertisementTest{
 		item.setSourceURI("Kirigiri");
 		assertTrue(item.getSourceURI().equals("Kirigiri"));
 		
-		//peer.stop();
-		
-		//peer = null;
 		System.gc();
 	}
 }

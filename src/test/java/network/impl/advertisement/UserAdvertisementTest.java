@@ -34,17 +34,6 @@ public class UserAdvertisementTest {
 		assertTrue(name.equals(user.getName()));  
 		
 		assertTrue(user.getAdvertisementType() == null);
-		
-		/*Peer peer = PeerFactory.createDefaultAndStartPeer();
-
-		try
-		{
-			Thread.sleep(2000); // On laisse le temps au choses de s'init
-		}
-		catch (InterruptedException e)
-		{}
-
-		user.publish(peer);*/
 	
 		Element elem = new Element("Coucou");
 		Document doc = new Document (elem);
@@ -55,8 +44,6 @@ public class UserAdvertisementTest {
 		
 		user.setSourceURI("Kirigiri");
 		assertTrue(user.getSourceURI().equals("Kirigiri"));
-		
-		//peer.stop(); 
 		
 	}
 }

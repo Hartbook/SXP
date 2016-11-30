@@ -34,17 +34,6 @@ public class JxtaAdvertisementTest {
 		assertTrue(jxtaAdv.getAdvertisementType().equals("jxta:item"));
 		testBridge();
 		assertTrue(Arrays.equals(jxtaAdv.getIndexFields(),adv.getIndexFields()));
-		
-		//Peer peer = PeerFactory.createDefaultAndStartPeer();
-
-		try
-		{
-			Thread.sleep(2000); // On laisse le temps au choses de s'init
-		}
-		catch (InterruptedException e)
-		{}
-
-		//jxtaAdv.publish(peer);
 	
 		Element elem = new Element("Coucou");
 		Document doc = new Document (elem);
@@ -55,10 +44,6 @@ public class JxtaAdvertisementTest {
 		
 		jxtaAdv.setSourceURI("Kirigiri");
 		assertTrue(jxtaAdv.getSourceURI().equals("Kirigiri"));
-		
-		//peer.stop();
-		
-		//peer = null;
 		
 		System.gc();
 		
