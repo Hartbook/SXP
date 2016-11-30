@@ -17,14 +17,13 @@ import javax.validation.ValidationException;
 public class ItemValidatorTest {
 
 	ValidatorFactory factory = new ValidatorFactory();
+	
 	@Test
 	public void test() {
 		ItemValidator validator = factory.createItemValidator();
 		Item item = new Item();
 			
 		ItemValidator validator2 = factory.createItemValidator();
-		
-		assertFalse(validator2.validate());
 		
 		assertFalse(validator2.validate());
 		
