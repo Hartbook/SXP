@@ -1,4 +1,5 @@
 /* Uncomment this file if you have a recent version of firefox installed
+// Only tested on Windows
 
 package controller;
  
